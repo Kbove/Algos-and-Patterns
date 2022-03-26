@@ -1,4 +1,9 @@
+// -------------------------------------------------------------------------------------------------
+
+// FREQUENCY COUNTER
+
 // Is an anagram?
+
 function validAnagram(str1, str2) {
     // add whatever parameters you deem necessary - good luck!
     if (str1.length !== str2.length) {
@@ -22,8 +27,11 @@ function validAnagram(str1, str2) {
     }
     return true
 }
+// --------------------------------------------------------------------------------------------------
 
-// Multiple pointers, Unique values: Accepts a sorted array and counts the unique values in the array
+// MULTIPLE POINTERS 
+
+// Unique Values: Accepts a sorted array and counts the unique values in the array
 
 function countUniqueValues(arr) {
     // add whatever parameters you deem necessary - good luck!
@@ -45,7 +53,59 @@ function countUniqueValues(arr) {
     return left + 1
 }
 
-// Sliding window, given two position integers, find if these integers have the same frequency of digits
+// Substring Sequence: Write a function that takes two strings and checks whether the characters in the first string form a subsequence of the characters in the second string
+
+function isSubsequence(str1, str2) {
+    // good luck. Add any arguments you deem necessary.
+    if (str1.length === 0) return true
+    if (str2.length === 0) return false
+
+    if (str1[0] === str2[0]) return isSubsequence(str1.slice(1), str2.slice(1))
+
+    return isSubsequence(str1, str2.slice(1))
+}
+
+// Are There Dupes: Accepts a variable number of args and checks whether there are any duplicates among the args passed in
+
+function areThereDuplicates() {
+    // good luck. (supply any arguments you deem necessary.)
+    let collection = {}
+    for (let val in arguments) {
+        collection[arguments[val]] = (collection[arguments[val]] || 0) + 1
+    }
+    for (let key in collection) {
+        if (collection[key] > 1) {
+            return true
+        }
+    }
+    return false
+}
+
+// Average Pair: Given a sorted array of integers and a target average, determine if there is a pair of values in the array where the average of the pair equals the target
+
+function averagePair(arr, avg) {
+    // add whatever parameters you deem necessary - good luck!
+
+    let start = 0
+    let end = arr.length - 1
+
+    while (start < end) {
+        if ((arr[start] + arr[end]) / 2 === avg) {
+            return true
+        } else if ((arr[start] + arr[end]) / 2 < avg) {
+            start++
+        } else {
+            end--
+        }
+    }
+    return false
+}
+
+// -----------------------------------------------------------------------------------------------------
+
+// SLIDING WINDOW
+
+// Same Frequency: Given two position integers, find if these integers have the same frequency of digits
 
 function sameFrequency(num1, num2) {
     // good luck. Add any arguments you deem necessary.
@@ -81,51 +141,71 @@ function sameFrequency(num1, num2) {
     return true
 }
 
-// Frequency counter/multiple pointers: accepts a variable number of args and checks whether there are any duplicates among the args passed in
+// Max Subarray Sum: Write a function that find the max sum of a subarray with the length of a number passed into the function
 
-function areThereDuplicates() {
-    // good luck. (supply any arguments you deem necessary.)
-    let collection = {}
-    for (let val in arguments) {
-        collection[arguments[val]] = (collection[arguments[val]] || 0) + 1
+function maxSubarraySum(arr, num) {
+    // add whatever parameters you deem necessary - good luck!
+    let maxSum = 0
+    let tempSum = 0
+
+    if (arr.length < num) return null
+    for (let i = 0; i < num; i++) {
+        maxSum += arr[i]
     }
-    for (let key in collection) {
-        if (collection[key] > 1) {
-            return true
-        }
+    tempSum = maxSum
+    for (let i = num; i < arr.length; i++) {
+        tempSum = tempSum - arr[i - num] + arr[i]
+        maxSum = Math.max(maxSum, tempSum)
     }
-    return false
+    return maxSum
 }
 
-// Multiple pointers, average pair: Given a sorted array of integers and a target average, determine if there is a pair of values in the array where the average of the pair equals the target
+// Min Subarray Length: Write a function that accepts two params, an array of positive integers and a positive integer, should return the minimal length of a contiguous subarray of which the sum is greater than or equal to the integer passed to the function, return 0 if none
 
-function averagePair(arr, avg) {
-    // add whatever parameters you deem necessary - good luck!
-
+function minSubArrayLen (arr, sum) {
+    let total = 0
     let start = 0
-    let end = arr.length - 1
-
-    while (start < end) {
-        if ((arr[start] + arr[end]) / 2 === avg) {
-            return true
-        } else if ((arr[start] + arr[end]) / 2 < avg) {
+    let end = 0
+    let subarrayLen = Infinity
+    
+    while (start < arr.length) {
+        if (total < sum && end < arr.length) {
+            total += arr[end]
+            end++
+        } else if (total >= sum) {
+            subarrayLen = Math.min(subarrayLen, end - start)
+            total -= arr[start]
             start++
         } else {
-            end--
+            break
         }
     }
-    return false
+    return subarrayLen === Infinity ? 0 : subarrayLen
 }
 
-// Multiple pointers: write a function that takes two strings and checks whether the characters in the first string form a subsequence of the characters in the second string
+// Find the Longest Substring: Function that accepts a string and returns the length of the longest substring with all distinct characters
 
-function isSubsequence(str1, str2) {
-    // good luck. Add any arguments you deem necessary.
-    if (str1.length === 0) return true
-    if (str2.length === 0) return false
-
-    if (str1[0] === str2[0]) return isSubsequence(str1.slice(1), str2.slice(1))
-
-    return isSubsequence(str1, str2.slice(1))
-}
-
+function findLongestSubstring(str){
+    // add whatever parameters you deem necessary - good luck!
+    let strArr = str.split('')
+    if (strArr.length === 0) {
+        return 0
+    }
+    
+    let len = 0
+    let seen = {}
+    let longest = 0
+    
+    
+    for (let i = 0; i < strArr.length; i++) {
+        if (!seen[strArr[i]]) {
+            seen[strArr[i]] = 1
+            len++
+        } else {
+            seen = {}
+            longest = Math.max(longest, len)
+            len = 0
+        }
+    }
+    return longest
+  }
