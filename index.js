@@ -65,6 +65,18 @@ function isSubsequence(str1, str2) {
     return isSubsequence(str1, str2.slice(1))
 }
 
+function isSubsequence(str1, str2) {
+    var i = 0;
+    var j = 0;
+    if (!str1) return true;
+    while (j < str2.length) {
+        if (str2[j] === str1[i]) i++;
+        if (i === str1.length) return true;
+        j++;
+    }
+    return false;
+}
+
 // Are There Dupes: Accepts a variable number of args and checks whether there are any duplicates among the args passed in
 
 function areThereDuplicates() {
@@ -162,12 +174,12 @@ function maxSubarraySum(arr, num) {
 
 // Min Subarray Length: Write a function that accepts two params, an array of positive integers and a positive integer, should return the minimal length of a contiguous subarray of which the sum is greater than or equal to the integer passed to the function, return 0 if none
 
-function minSubArrayLen (arr, sum) {
+function minSubArrayLen(arr, sum) {
     let total = 0
     let start = 0
     let end = 0
     let subarrayLen = Infinity
-    
+
     while (start < arr.length) {
         if (total < sum && end < arr.length) {
             total += arr[end]
@@ -185,18 +197,18 @@ function minSubArrayLen (arr, sum) {
 
 // Find the Longest Substring: Function that accepts a string and returns the length of the longest substring with all distinct characters
 
-function findLongestSubstring(str){
+function findLongestSubstring(str) {
     // add whatever parameters you deem necessary - good luck!
     let strArr = str.split('')
     if (strArr.length === 0) {
         return 0
     }
-    
+
     let len = 0
     let seen = {}
     let longest = 0
-    
-    
+
+
     for (let i = 0; i < strArr.length; i++) {
         if (!seen[strArr[i]]) {
             seen[strArr[i]] = 1
@@ -208,4 +220,17 @@ function findLongestSubstring(str){
         }
     }
     return longest
-  }
+}
+
+// -----------------------------------------------------------------------------------------------------------------
+// "EASY" ALGOS ON HACKERRANK THAT ARE NOT EASY
+
+function weightedUniformStrings(s, queries) {
+    // Write your code here
+
+    const result = s.match(/([a-z])(\1)*/g);
+    const values = result.flatMap((m) => Array.from(new Array(m.length), (val, index) =>
+        (m.charCodeAt(0) - 97 + 1) * (index + 1)));
+    return queries.map((q) => values.includes(q) ? 'Yes' : 'No')
+
+}
